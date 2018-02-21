@@ -226,8 +226,8 @@ int write_mrc_file(_mrc* mrc, char *filename){
       mean = 0;
       k = 0;
       for(j = 0; j < 20; j++){
-	if(mrc->output[(i + neighbours[j]) % (mrc->n_crs[0] * mrc->n_crs[1])] > 0.0625){
-	  mean += mrc->output[(i + neighbours[j]) % (mrc->n_crs[0] * mrc->n_crs[1])];
+	if(mrc->output[((mrc->n_crs[0] * mrc->n_crs[1]) + i + neighbours[j]) % (mrc->n_crs[0] * mrc->n_crs[1])] > 0.0625){
+	  mean += mrc->output[((mrc->n_crs[0] * mrc->n_crs[1]) + i + neighbours[j]) % (mrc->n_crs[0] * mrc->n_crs[1])];
 	  k++;
 	}
       }
