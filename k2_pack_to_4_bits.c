@@ -106,9 +106,6 @@ int read_mrc_file(_mrc *mrc, char* filename){
     printf(" Error reading %s - no mrc structure allocated\n", filename);
     return -1;
   }
-  if (mrc->file){
-    fclose(mrc->file);
-  }
   mrc->file = fopen(filename, "rb");
   if (!mrc->file){
     printf(" Error reading %s - bad file handle\n", filename);
@@ -191,9 +188,7 @@ int write_mrc_file(_mrc* mrc, char *filename){
   mrc->d_mean =   4;
   mrc->rms    = 4.0;
   // Output header to file
-  if (mrc->file){
-    fclose(mrc->file);
-  }
+  fclose(mrc->file);
   mrc->file = fopen(filename, "wb");
   if (!mrc->file){
     fprintf(stderr, "\n Error writing output - bad file handle\n");
