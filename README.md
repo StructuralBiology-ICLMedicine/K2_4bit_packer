@@ -10,9 +10,17 @@
 
 **Licence**: GPL
 
-These programs are intended to extract the gain reference from MRC format counting data < k2_gain_estimator.c > recorded in 16 or 32 bit and, using such an extracted gain reference, to pack the original data into 4-bit, mode 101, MRC files < k2_pack_to_4_bits.c >. They require the c math library to be linked.
+This program is intended to extract, refine and remove the gain reference from MRC format counting data recorded as 32 bit float frames WITHOUT motion correction and, using the extracted gain reference, to pack the original data into 4-bit, mode 101, MRC files. They require the c math library to be linked and POSIX threads.
 
-Estimation proceeds from several image stacks by calculating the ratio between the current estimate and each new pixel in Z. Bit packing is according to the non-standard mode 101 MRC format used by several software packages, and the original image stacks can be recovered by motioncorr2 or multiplication.
+
+      Usage - (list_of_mrc_stacks) | k2_bit_packer [ --gain ][ --pack <gain.raw> ] 
+
+
+MRC stacks in mode 2 (32-bit float) only, are read in from standard input as valid paths ending in ".mrc". Output stacks will be written in the current working directory as "-4bit.mrc".
+
+Option [ --gain ] estimates and refines a gain reference. The initial gain estimate is the minimum over a single frame stack. Refinement of this gain estimate is then by re-estimating the gain value for each pixel in each frame and averaging over a number of stacks.
+
+Option [ --pack <gain.raw> ] packs stacks according to a completed gain reference. Bit packing is according to the non-standard mode 101 MRC format used by several software packages, including motioncor2, and the original image stacks can be recovered by motioncor2 or simple multiplication. It is recommended to try this at least once before archiving data processed this way.
 
 This is NOT, and NEVER will be a recommended procedure - K2 counting data should always be written as integers, with the corresponding gain images retained. This is a workaround to avoid retention of massive amounts of 32bit data with the corresponding overhead on storage and power consumption.
 
